@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Col, Row } from "react-bootstrap";
+import NaviBar from "./Components/Navibar";
+import NewsItem from "./Components/NewsItem";
+import LoginForm from "./Components/LoginForm";
+import { news as defaultNews } from "./data";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { NewsThread } from "./Components/NewsThread";
 
 function App() {
+  const [news, setNews] = useState(defaultNews);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <NaviBar></NaviBar>
+        <Container>
+          <Row>
+            <Col xs={12}>
+              <Switch>
+                <Route
+                  exact
+                  path="/:category"
+                  render={({ match }) => (
+                    <NewsThread
+                      category={match.params.category}
+                      news={news}
+                      setNews={setNews}
+                    />
+                  )}
+                ></Route>
+              </Switch>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </Router>
   );
 }
 
